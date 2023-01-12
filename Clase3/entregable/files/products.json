@@ -1,1 +1,29 @@
-[{"id":1,"title":"coca","description":"bebida","price":500,"thumbail":"url1","code":"code","stock":9000}]
+[
+ {
+  "id": 1,
+  "title": "agua",
+  "description": "bebida",
+  "price": 100,
+  "thumbail": "url",
+  "code": "code2712",
+  "stock": 1000
+ },
+ {
+  "id": 2,
+  "title": "coca",
+  "description": "bebida",
+  "price": 500,
+  "thumbail": "url1",
+  "code": "code6879",
+  "stock": 9000
+ },
+ {
+  "id": 3,
+  "title": "coca",
+  "description": "bebida",
+  "price": 500,
+  "thumbail": "url1",
+  "code": "code68797",
+  "stock": 9000
+ }
+]
