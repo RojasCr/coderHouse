@@ -191,5 +191,5 @@ const manejadorDeProductos = new ProductManager();
 //manejadorDeProductos.addProduct("coca", "bebida", 500, "url1", "code14578", 9000);
 //manejadorDeProductos.getProducts();
 //manejadorDeProductos.getProductById(2);
-manejadorDeProductos.updateProduct(3, "manaos", "bebida", 5500, "url1", "code1578", 9000);
+//manejadorDeProductos.updateProduct(3, "manaos", "bebida", 5500, "url1", "code1578", 9000);
 //manejadorDeProductos.deleteProduct(4);
