@@ -56,6 +56,6 @@ class ProductManager {
 const manejadorDeProductos = new ProductManager();
 
 console.log(manejadorDeProductos.addProduct("agua", "bebida", 100, "url", "code", 1000));
-console.log(manejadorDeProductos.addProduct("coca", "bebida", 500, "url1", "code", 9000));
-console.log(manejadorDeProductos.getProducts());
-console.log(manejadorDeProductos.getProductById(10));
+console.log(manejadorDeProductos.addProduct("coca", "bebida", 500, "url1", "code2", 9000));
+//console.log(manejadorDeProductos.getProducts());
+//console.log(manejadorDeProductos.getProductById(10));
