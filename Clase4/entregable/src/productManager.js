@@ -6,9 +6,9 @@ class ProductManager {
     
     constructor(){
         //this.id = 0;
-        this.path = "./files/products.json";
+        this.path = "./products.json";
         this.type = "utf-8";
-    }
+    } 
 
     
     
@@ -80,17 +80,18 @@ class ProductManager {
                 await fs.promises.writeFile(this.path, productsStr);
             } 
             if(fs.existsSync(this.path)){
-                const resultado = await fs.promises.readFile("./files/products.json", "utf-8");
+                const resultado = await fs.promises.readFile(this.path, this.type);
                 const resultadoStr =  resultado;
                 const resultadoObj = await JSON.parse(resultadoStr);
-                console.log(resultadoObj);
+                //console.log(resultadoObj);
+                return resultadoObj;
             }
         } catch (err) {
             throw new Error(err);    
         }
     }
         
-        //Método para obtener un producto por id
+    //Método para obtener un producto por id
     async getProductById(i){
         try{
             let resultado = await fs.promises.readFile(this.path, this.type);
@@ -100,10 +101,10 @@ class ProductManager {
                 );
     
                 if(producto){
-                    console.log(producto);
+                    //console.log(producto);
                     return producto;
                 } else {
-                    console.log(`Not found`);
+                    //console.log(`Not found`);
                     return `Not found`;
                 }
         } catch (err){
@@ -184,9 +185,13 @@ class ProductManager {
 const manejadorDeProductos = new ProductManager();
 
   
-manejadorDeProductos.getProducts();
-//manejadorDeProductos.addProduct("agua", "bebida", 100, "url", "code2712", 1000);
+
+//manejadorDeProductos.getProducts();
+//manejadorDeProductos.addProduct("agua", "bebida", 100, "url", "code223", 1000);
 //manejadorDeProductos.getProducts();
 //manejadorDeProductos.getProductById(1);
 //manejadorDeProductos.updateProduct(1, "manaos", "bebida", 5500, "url1", "code1578", 9000);
 //manejadorDeProductos.deleteProduct(1);
+
+
+module.exports = manejadorDeProductos;

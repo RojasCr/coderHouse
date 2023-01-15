@@ -1,0 +1,38 @@
+[
+ {
+  "id": 1,
+  "title": "agua",
+  "description": "bebida",
+  "price": 100,
+  "thumbail": "url",
+  "code": "code2712",
+  "stock": 1000
+ },
+ {
+  "id": 2,
+  "title": "agua",
+  "description": "bebida",
+  "price": 100,
+  "thumbail": "url",
+  "code": "code2",
+  "stock": 1000
+ },
+ {
+  "id": 3,
+  "title": "agua",
+  "description": "bebida",
+  "price": 100,
+  "thumbail": "url",
+  "code": "code22",
+  "stock": 1000
+ },
+ {
+  "id": 4,
+  "title": "agua",
+  "description": "bebida",
+  "price": 100,
+  "thumbail": "url",
+  "code": "code223",
+  "stock": 1000
+ }
+]
