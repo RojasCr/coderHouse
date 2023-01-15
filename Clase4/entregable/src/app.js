@@ -1,7 +1,7 @@
 const express = require("express");
 const manejadorDeProductos= require("./productManager");
 const app = express();
-const PORT = 8000;
+const PORT = 8080;
 
 //Middlewares
 app.use(express.urlencoded({extended: true}));
@@ -12,7 +12,6 @@ app.get("/products", async (req, res) =>{
     let products = await manejadorDeProductos.getProducts();
     if(!limit){
         return res.json(products);
-        //console.log(products);
     }
     let productsLimit = await products.slice(0, limit);
     res.json(productsLimit);
@@ -21,7 +20,11 @@ app.get("/products", async (req, res) =>{
 
 app.get("/products/:pid", async (req, res) => {
     let { pid } = req.params;
+    let products = await manejadorDeProductos.getProducts();
     let productPid = await manejadorDeProductos.getProductById(pid);
+    if(pid > products.length){
+        return res.json({ message: "ERROR: This product doesn't exist"});
+    }
     res.json(productPid);
 });
 

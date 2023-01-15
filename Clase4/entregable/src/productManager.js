@@ -187,7 +187,7 @@ const manejadorDeProductos = new ProductManager();
   
 
 //manejadorDeProductos.getProducts();
-//manejadorDeProductos.addProduct("agua", "bebida", 100, "url", "code223", 1000);
+//manejadorDeProductos.addProduct("bolstrap", "bolsa", 100, "url", "code41", 1000);
 //manejadorDeProductos.getProducts();
 //manejadorDeProductos.getProductById(1);
 //manejadorDeProductos.updateProduct(1, "manaos", "bebida", 5500, "url1", "code1578", 9000);
