@@ -3,7 +3,11 @@
   "id": 1,
   "products": [
    "asdas",
-   "jasikj"
+   "jasikj",
+   {
+    "product": 8,
+    "quantity": 2
+   }
   ]
  },
  {
@@ -16,34 +20,10 @@
  {
   "id": 3,
   "products": [
-   "asdas",
-   "jasikj",
-   9
-  ]
- },
- {
-  "id": 4,
-  "products": [
-   "asdas",
-   "jasikj",
    {
-    "product": 5,
-    "quantity": 2
+    "product": 6,
+    "quantity": 4
    }
-  ]
- },
- {
-  "id": 5,
-  "products": [
-   "asdas",
-   "jasikj"
-  ]
- },
- {
-  "id": 6,
-  "products": [
-   "asdas",
-   "jasikj"
   ]
  }
 ]
