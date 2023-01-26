@@ -6,8 +6,8 @@ class CartsManager {
 
     constructor(){
         this.products = [],
-        this.path = "./proyectoFinal_primeraEntrega/src/carts/carts.json",
-        this.productsPath = "./proyectoFinal_primeraEntrega/src/products/products.json",
+        this.path = __dirname + "/carts.json",
+        this.productsPath = __dirname + "/../products/products.json",
         this.type = "utf-8"
     }
 
@@ -38,6 +38,8 @@ class CartsManager {
             cartsObj.push(newCart);
             const newCartsStr = JSON.stringify(cartsObj, null, " ");
             await fs.promises.writeFile(this.path, newCartsStr);
+
+            return `Cart created`;
             
         } catch (err){
             throw new Error(err);
@@ -84,7 +86,7 @@ class CartsManager {
 
             const productToAdd = {
                 product: productId.id,
-                quantity: 0
+                quantity: 1
             }
 
             
@@ -121,3 +123,5 @@ const manejadorDeCarrito = new CartsManager();
 
 module.exports = manejadorDeCarrito;
 })();
+
+//console.log(__dirname + /*"./proyectoFinal_primeraEntrega/src/products*/"/..products.json")
