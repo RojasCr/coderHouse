@@ -1,0 +1,92 @@
+[
+ {
+  "id": 1,
+  "title": "agua",
+  "description": "bebida",
+  "price": 100,
+  "thumbail": "url",
+  "code": "code2712",
+  "stock": 1000
+ },
+ {
+  "id": 2,
+  "title": "agua",
+  "description": "bebida",
+  "price": 100,
+  "thumbail": "url",
+  "code": "code2",
+  "stock": 1000
+ },
+ {
+  "id": 3,
+  "title": "agua",
+  "description": "bebida",
+  "price": 100,
+  "thumbail": "url",
+  "code": "code22",
+  "stock": 1000
+ },
+ {
+  "id": 4,
+  "title": "agua",
+  "description": "bebida",
+  "price": 100,
+  "thumbail": "url",
+  "code": "code223",
+  "stock": 1000
+ },
+ {
+  "id": 5,
+  "title": "jorgin",
+  "description": "alfajor",
+  "price": 100,
+  "thumbail": "url",
+  "code": "code1",
+  "stock": 1000
+ },
+ {
+  "id": 6,
+  "title": "gualmar",
+  "description": "alfajor",
+  "price": 100,
+  "thumbail": "url",
+  "code": "code11",
+  "stock": 1000
+ },
+ {
+  "id": 7,
+  "title": "papelin",
+  "description": "papel",
+  "price": 100,
+  "thumbail": "url",
+  "code": "code3",
+  "stock": 1000
+ },
+ {
+  "id": 8,
+  "title": "papecon",
+  "description": "papel",
+  "price": 100,
+  "thumbail": "url",
+  "code": "code31",
+  "stock": 1000
+ },
+ {
+  "id": 9,
+  "title": "bolsin",
+  "description": "bolsa",
+  "price": 100,
+  "thumbail": "url",
+  "code": "code4",
+  "stock": 1000
+ },
+ {
+  "id": 10,
+  "title": "bolstrap",
+  "description": "bolsa",
+  "price": 100,
+  "thumbail": "url",
+  "code": "code41",
+  "stock": 1000
+ }
+]

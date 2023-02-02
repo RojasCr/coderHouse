@@ -1,0 +1,11 @@
+<div>
+    <h1>¡Hola {{user.name}}!</h1>
+    {{#if isAdmin}}
+        <h2>¡Bienvenido {{user.role}}!</h2>
+        <h3>Estos son los productos:</h3>
+        {{#each food}}
+            <p>{{this.name}}</p>
+            <p>{{this.price}}</p>
+        {{/each}}
+    {{/if}}
+</div>
