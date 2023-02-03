@@ -7,7 +7,6 @@ const router = (app) => {
     app.use("/api/products", productsController);
     app.use("/api/carts", cartsController);
     app.use("/", handlebarsController);
-    //app.on("connection", handlebarsController)
 }
 
 module.exports = router;
