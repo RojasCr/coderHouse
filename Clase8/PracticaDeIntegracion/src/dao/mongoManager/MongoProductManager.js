@@ -8,7 +8,16 @@ class MongoProductManager{
             const desc = -1;
             const none = 0;
 
-            const filtrado = query? {category: query} : {};
+            let filtrado = {};
+            if(query && query == "available"){
+                filtrado = {stock: {$gt: 0}}
+                
+            }
+            if(query && query !== "available"){
+
+                filtrado = {category: query}
+            }
+            
 
             const productsLimit = await productsModel.paginate(filtrado, {limit: limit || 10, page: page || 1, sort: {price: sort } || none});
             return productsLimit;

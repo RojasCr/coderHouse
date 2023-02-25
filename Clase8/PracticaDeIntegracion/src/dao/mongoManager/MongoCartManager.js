@@ -71,15 +71,18 @@ class MongoCartManager{
     updateCart = async (cid, pid) => {
         try {
             const cart = await cartsModel.findOne({id: Number(cid)});
-            const producto = await productsModel.findOne({id: Number(pid)});
-            const update = [
-                {
+            const update = [];
+            pid.forEach(async (id) => {
+                const producto = await productsModel.findOne({id: Number(id)});
+                const product = {
                     product: producto._id,
                     quantity:1
                 }
-            ];
-            if(cart){
+                update.push(product);
                 await cartsModel.updateOne({id: Number(cid)}, {$set: {products: update}})
+            })
+            
+            if(cart){
                 return `Products updated`;
             }else {
                 return `Cart not found`;

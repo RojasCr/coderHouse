@@ -51,7 +51,7 @@ router.get("/products", async(req, res) => {
 
     const productsStr = JSON.stringify(products);
     const productsObj = JSON.parse(productsStr);
-    return res.render("products", {products: productsObj, style: "css/productos.css"});
+    return res.render("products", {products: productsObj, style: "css/productos.css", limit: limit});
 });
 
 router.get("/products/description", async(req, res) => {

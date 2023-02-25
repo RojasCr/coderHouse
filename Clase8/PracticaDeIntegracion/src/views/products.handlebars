@@ -2,6 +2,7 @@
     <header>
         <form action="" method="get">
             <input type="text" name="query" placeholder="Filtar" formaction="localhost:8080/products">
+            
             <input type="text" name="sort" placeholder="Ordenar" formaction="localhost:8080/products">
             <input type="submit" value="filtrar">
         </form>
@@ -12,6 +13,7 @@
                 <a href="http://localhost:8080/products/description?pid={{id}}" >
                     {{title}}
                     {{price}}
+                    {{category}}
                 </a>
                 <button>Add to cart</button>
             </div>

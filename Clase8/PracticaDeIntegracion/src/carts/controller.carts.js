@@ -52,7 +52,7 @@ router.delete("/:cid/products/:pid", async(req, res) => {
 });
 
 //****PREGUNTAR****// 
-router.put("/:cid", async (req, res) => {
+router.put("/put/:cid", async (req, res) => {
     try {
         const { cid } = req.params;
         const { pid } = req.body
