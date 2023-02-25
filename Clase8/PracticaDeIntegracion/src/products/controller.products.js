@@ -7,25 +7,40 @@ const productManager = new MongoProductManager();
 const router = Router();
 
 router.get("/", async (req, res) =>{
-    // let { limit } = req.query;
+    let { limit, page, sort, query } = req.query;
     // let products = await manejadorDeProductos.getProducts();
     // if(!limit){
     //     return res.json(products);
     // }
     // let productsLimit = await products.slice(0, limit);
     // res.json(productsLimit);
-    productManager.getProducts(req, res);
+    let response = await productManager.getProducts(limit, page, sort, query);
+    
+    const products = {
+        status: response ? "succes" : "error",
+        payload: response.docs,
+        totalPages: response.totalPages,
+        prevPage: response.prevPage,
+        nextPage: response.nextPage,
+        page: response.page,
+        hasPrevPage: response.hasPrevPage,
+        hasNextPage: response.hasNextPage,
+        prevLink: response.hasPrevPage? `localhost:8080/api/products?page=${Number(page)-1}` : null,
+        nextLink: response.hasNextPage? `localhost:8080/api/products?page=${Number(page)+1}` : null
+    }
+
+    return res.json(products);
 });
 
 router.get("/:pid", async (req, res) => {
-    // let { pid } = req.params;
+    const { pid } = req.params;
+    const response = await productManager.getProductbyId(pid);
     // let products = await manejadorDeProductos.getProducts();
     // let productPid = await manejadorDeProductos.getProductById(pid);
     // if(pid > products.length){
     //     return res.json({ message: "ERROR: This product doesn't exist"});
     // }
-    // res.json(productPid);
-    productManager.getProductbyId(req, res);
+    res.json(response);
 });
 
 router.post("/", async (req, res) => {

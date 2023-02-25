@@ -1,10 +1,14 @@
 const { Router } = require("express");
-const router = Router();
+const { io } = require("../server/socketServer")
 const productsModel = require("../dao/models/products.model");
 const messagesModel = require("../dao/models/messages.model");
+const MongoProductManager = require("../dao/mongoManager/MongoProductManager");
+const MongoCartManager = require("../dao/mongoManager/MongoCartManager");
+const productManager = new MongoProductManager();
+const cartManager = new MongoCartManager();
 const manejadorDeProductos = require("../dao/filesManager/productManager");
-const { io } = require("../server/socketServer")
 
+const router = Router();
 
 
 router.get("/", async(req, res) => {
@@ -20,12 +24,60 @@ router.get("/", async(req, res) => {
     }
 });
 
+router.get("/products", async(req, res) => {
+    let { limit, page, sort, query } = req.query;
+    // let products = await manejadorDeProductos.getProducts();
+    // if(!limit){
+    //     return res.json(products);
+    // }
+    // let productsLimit = await products.slice(0, limit);
+    // res.json(productsLimit);
+    let response = await productManager.getProducts(limit, page, sort, query);
+    const orden = sort? `&sort=${sort}` : "";
+    const filter = query? `&query=${query}` : "";
+    
+    const products = {
+        status: response ? "succes" : "error",
+        payload: response.docs,
+        totalPages: response.totalPages,
+        prevPage: response.prevPage,
+        nextPage: response.nextPage,
+        page: response.page,
+        hasPrevPage: response.hasPrevPage,
+        hasNextPage: response.hasNextPage,
+        prevLink: response.hasPrevPage? `localhost:8080/products?limit=${limit||10}&page=${Number(response.page) - 1}${orden + filter}` : null,
+        nextLink: response.hasNextPage? `localhost:8080/products?limit=${limit||10}&page=${Number(response.page) + 1}${orden + filter}` : null
+    }
+
+    const productsStr = JSON.stringify(products);
+    const productsObj = JSON.parse(productsStr);
+    return res.render("products", {products: productsObj, style: "css/productos.css"});
+});
+
+router.get("/products/description", async(req, res) => {
+    const { pid } = req.query;
+    const product = await productManager.getProductbyId(pid);
+    const productStr = JSON.stringify(product);
+    const productObj = JSON.parse(productStr);
+
+    res.render("productDescription", {product: productObj})
+});
+
+router.get("/carts/:cid", async(req, res) => {
+    const { cid } = req.params;
+    const cartId = await cartManager.getCartById(cid);
+    const cartStr = JSON.stringify(cartId);
+    const cartObj = JSON.parse(cartStr);
+
+    res.render("cart", {cart: cartObj})
+});
+
 router.get("/realTimesProducts", (req, res) => {
         res.render("realTimesProducts", {});
 });
 
 router.get("/chat", (req, res) => {
-    res.render("chat", {style: "index.css"});
+    res.render("chat", {style: "css/index.css"});
 })
 
 //Local

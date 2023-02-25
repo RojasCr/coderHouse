@@ -1,15 +1,15 @@
-
+const productsModel = require("../models/products.model")
 const cartsModel = require("../models/carts.model")
 
 class MongoCartManager{
-    addCart = async (req, res) => {
+    addCart = async () => {
         try {
             //const cartsLength = await cartsModel.count();
             const carts = await cartsModel.find();
             const cartsLength = carts.length;
     
             const newCart = {
-                id: 0,
+                id: 1,
                 products: []
             };
     
@@ -18,52 +18,120 @@ class MongoCartManager{
             }
     
             await cartsModel.create(newCart);
+            return `Cart created with id ${newCart.id}`
         } catch (err) {
             throw new Error(err);
         }
     }
 
-
-    addProductToCart = async(req,res) => {
+    getCartById = async (cid) => {
         try{
-            const { cid, pid} = req.params;
-            const producto = await productsModel.findOne({id: Number(pid)});
-            const productToAdd = {
-                product : producto.id,
-                quantity: 1
-            }
-        
-            const cart = await cartsModel.findOne({id: Number(cid)});
-            const productRepeated = cart.products.find(p => p.product === Number(pid));
-            if(productRepeated){
-                const newQuantity = productRepeated.quantity + 1;
-                await cartsModel.updateOne({id: Number(cid), "products.product": Number(pid)}, {$set: {"products.$.quantity": newQuantity}});
-                res.send(`Cantidad aumentada`);
-            } else {
-                await cartsModel.updateOne({id: Number(cid)},{$addToSet: {products: productToAdd}});
-                res.send(`Producto agregado`);
-            }
-        } catch (err){
-            throw new Error(err);
-        }
-    };
-
-    getCartById = async (req, res) => {
-        try{
-            const { cid } = req.params;
-            const cartId = await cartsModel.findOne({id: Number(cid)});
+            const cartId = await cartsModel.findOne({id: cid}).populate("products.product");
 
             if(!cartId){
-                return res.send(`Cart not found`);
+                return `Cart not found`;
             }
 
-            return res.json(cartId.products);
+            return cartId;
         } catch (err){
             throw new Error(err);
         }
 
     }
 
+    addProductToCart = async(cid, pid) => {
+        try{
+            
+            const producto = await productsModel.findOne({id: pid});
+            const productToAdd = {
+                product : producto._id,
+                quantity: 1
+            }
+            
+            const cart = await cartsModel.findOne({id: cid});
+            const productRepeated = cart.products.find(p => String(p.product) === String(producto._id));
+            if(productRepeated){
+                const newQuantity = productRepeated.quantity + 1;
+                const result = await cartsModel.updateOne({id: Number(cid), "products.product": String(producto._id)}, {$set: {"products.$.quantity": newQuantity}});
+                return result;
+            } else {
+                cart.products.push(productToAdd);
+                let result = await cartsModel.updateOne({id: Number(cid)}, cart);
+                return result;
+            }
+            
+        } catch (err){
+            throw new Error(err);
+        }
+    };
+    
+    
+    
+    //****Preguntar****
+    updateCart = async (cid, pid) => {
+        try {
+            const cart = await cartsModel.findOne({id: Number(cid)});
+            const producto = await productsModel.findOne({id: Number(pid)});
+            const update = [
+                {
+                    product: producto._id,
+                    quantity:1
+                }
+            ];
+            if(cart){
+                await cartsModel.updateOne({id: Number(cid)}, {$set: {products: update}})
+                return `Products updated`;
+            }else {
+                return `Cart not found`;
+            }
+        } catch (error) {
+            throw new Error(error);
+        }
+    }
+    
+    updateQuantity = async (cid, pid, quan) => {
+        try {
+            const cart = await cartsModel.findOne({id: cid});
+            const producto = await productsModel.findOne({id: Number(pid)});
+            const product = cart.products.find(p => String(p.product) === String(producto._id));
+            if(product){
+                await cartsModel.updateOne({id: Number(cid), "products.product": String(producto._id)}, {$set: {"products.$.quantity": Number(quan)}});
+                return `Cantidad aumentada`;
+            }else{
+                return `Product not found`;
+            }
+        } catch (error) {
+            throw new Error(error);
+        }
+        
+    }
+    
+    deleteCart = async (cid) => {
+        try {
+            const cart = await cartsModel.findOne({id: Number(cid)});
+            await cartsModel.updateOne({id: Number(cid)}, {$set: {products: []}});
+            return `Products deleted from cart ${cart.id}`;
+        } catch (error) {
+            throw new Error(error);
+        }
+
+    }
+    
+    deleteProductFromCart = async (cid, pid) => {
+        try {
+            const cartCid = await cartsModel.findOne({id: Number(cid)});
+            const producto = await productsModel.findOne({id: Number(pid)})
+            const productToDelete = cartCid.products.find(p => String(p.product) === String(producto._id));
+            if(!productToDelete){
+                return `Product not found`;
+            }
+            await cartsModel.updateOne({id: Number(cid)}, {$pull: {products: productToDelete}})
+            return `Product deleted`;
+            
+        } catch (error) {
+            throw Error(error);
+        }
+    }
 }
 
 

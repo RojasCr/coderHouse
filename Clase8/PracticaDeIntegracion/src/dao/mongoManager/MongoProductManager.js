@@ -1,29 +1,31 @@
 const productsModel = require("../models/products.model");
 
 class MongoProductManager{
-    getProducts = async(req, res) => {
+    getProducts = async (limit, page, sort, query) => {
         try{
-            const { limit } = req.query;
-            if(!limit){
-                const products = await productsModel.find();
-                return res.json(products);
-            }
-            let productsLimit = await productsModel.find().limit(limit);
-            res.json(productsLimit);
+            //const { limit } = req.query;
+            const asc = 1;
+            const desc = -1;
+            const none = 0;
+
+            const filtrado = query? {category: query} : {};
+
+            const productsLimit = await productsModel.paginate(filtrado, {limit: limit || 10, page: page || 1, sort: {price: sort } || none});
+            return productsLimit;
         } catch(err){
             throw new Error(err);
         }
     }
 
-    getProductbyId = async(req, res) => {
+    getProductbyId = async(pid) => {
         try {
-            const { pid } = req.params;
-            const product = await productsModel.find({id: pid});
-            const productsLength = await productsModel.count();
-            if(pid > productsLength){
+            
+            const product = await productsModel.findOne({id: pid});
+            //const productsLength = await productsModel.count();
+            if(!product){
                 return res.status(404).send(`Product not found`);
             }
-            res.json(product);
+            return product;
         } catch (error) {
             throw new Error(error);
         }

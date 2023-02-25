@@ -16,6 +16,7 @@ app.use(express.static(__dirname + "/../public"));
 router;
 
 mongoose.set("strictQuery", false);
+
 mongoose.connect("mongodb+srv://coderBackend:descartes1@cluster0.9dxtyf1.mongodb.net/?retryWrites=true&w=majority", (err) => {
     if(err) {
         console.log("Cannot connect to DB: Error " + err);

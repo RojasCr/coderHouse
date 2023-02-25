@@ -1,0 +1,24 @@
+<div id="products">
+    <header>
+        <form action="" method="get">
+            <input type="text" name="query" placeholder="Filtar" formaction="localhost:8080/products">
+            <input type="text" name="sort" placeholder="Ordenar" formaction="localhost:8080/products">
+            <input type="submit" value="filtrar">
+        </form>
+    </header>
+    <div class="lista">
+        {{#each products.payload}}
+            <div class="card">
+                <a href="http://localhost:8080/products/description?pid={{id}}" >
+                    {{title}}
+                    {{price}}
+                </a>
+                <button>Add to cart</button>
+            </div>
+        {{/each}}
+    </div>
+    <footer>
+        <a href="http://{{products.prevLink}}">{{products.prevPage}}</a>
+        <a href="http://{{products.nextLink}}">{{products.nextPage}}</a>
+    </footer>
+</div>
