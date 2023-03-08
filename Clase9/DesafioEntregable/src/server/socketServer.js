@@ -5,8 +5,10 @@ const session = require("express-session");
 const app = express();
 const http = require("http");
 const { default: mongoose } = require("mongoose");
+const passport = require("passport");
 const server = http.createServer(app);
 const { Server } = require("socket.io");
+const initializePassport = require("../config/passport.config");
 const io = new Server(server);
 const router = require("../routers/Router");
 
@@ -26,6 +28,11 @@ app.use(session({
     resave: false,
     saveUninitialized: false
 }))
+
+initializePassport();
+app.use(passport.initialize());
+app.use(passport.session());
+
 //Se ejecuta router(app)
 router;
 

@@ -107,10 +107,10 @@ router.get("/login", publicAcces, (req, res) => {
     res.render("login")
 });
 
-/*router.get("/profile", privateAcces, (req, res) => {
-    const { user } = req.session;
-    res.render("profile", {user});
-})*/
+router.get("/restorePassword", (req, res) => {
+    //const { user } = req.session;
+    res.render("restorePassword", {});
+})
 
 
 

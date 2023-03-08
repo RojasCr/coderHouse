@@ -1,4 +1,5 @@
 
+const { cryptPassword } = require("../../utils/cryptPassword");
 const userModel = require("../models/users.model");
 
 class UserManager{
@@ -18,6 +19,23 @@ class UserManager{
             return response;
         } catch (error) {
             console.log(error)
+        }
+    }
+
+    findById = async(id) => {
+        try {
+            const result = await userModel.findById(id);
+            return result;            
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    updateUser = async(email, newPassword) => {
+        try {
+            await userModel.updateOne({email}, {password: cryptPassword(newPassword)})
+        } catch (error) {
+            console.log(error);
         }
     }
 

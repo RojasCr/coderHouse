@@ -22,9 +22,16 @@ form.addEventListener("submit", (e) => {
         body
     })
     .then(response => response.json())
-    .then(data => console.log(data))
     //.then(productsLink.click())
-    .catch(err => console.log(err))
-    setTimeout(()=>{productsLink.click()}, 1000);
+    .then(data => {
+        if(data.message == "El ususario y/o contraseña son incorrectos"){
+            return console.log(data)
+        }
+        //console.log("no")
+        productsLink.click();
+        }
+    )
+    .catch(error => console.log(error))
+    //setTimeout(()=>{productsLink.click()}, 1000);
     
 })
