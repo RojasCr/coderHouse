@@ -17,8 +17,8 @@ class MongoCartManager{
                 newCart.id = carts[cartsLength - 1].id + 1;
             }
     
-            await cartsModel.create(newCart);
-            return `Cart created with id ${newCart.id}`
+            const cartCreated = await cartsModel.create(newCart);
+            return {message: `Cart created with id ${newCart.id}`, result: cartCreated._id}
         } catch (err) {
             throw new Error(err);
         }
@@ -37,6 +37,15 @@ class MongoCartManager{
             throw new Error(err);
         }
 
+    }
+
+    getById = async (id) => {
+        try {
+            const cart = await cartsModel.findById(id);
+            return cart;
+        } catch (error) {
+            throw error
+        }
     }
 
     addProductToCart = async(cid, pid) => {

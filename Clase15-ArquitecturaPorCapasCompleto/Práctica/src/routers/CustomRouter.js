@@ -1,0 +1,82 @@
+const {Router} = require("express");
+const passport = require("passport");
+
+class CustomRouter{
+    constructor(){
+        this.router = Router();
+        this.init();
+    }
+
+    getRouter(){
+        return this.router;
+    }
+
+    init(){};
+
+    get(path, policies,...callbacks){
+        this.router.get(path, this.handlePolicies(policies), this.generateCustomResponses,this.applyCallbacks(callbacks));
+    }
+
+    post(path, policies, ...callbacks){
+        this.router.post(path, this.handlePolicies(policies), this.generateCustomResponses,this.applyCallbacks(callbacks));
+    }
+    
+    put(path, policies, ...callbacks){
+        this.router.put(path, this.handlePolicies(policies), this.generateCustomResponses,this.applyCallbacks(callbacks));
+    }
+
+    patch(path, policies, ...callbacks){
+        this.router.patch(path, this.handlePolicies(policies), this.generateCustomResponses,this.applyCallbacks(callbacks));
+    }
+    
+    delete(path, policies, ...callbacks){
+        this.router.delete(path, this.handlePolicies(policies), this.generateCustomResponses,this.applyCallbacks(callbacks));
+    }
+
+    applyCallbacks(callbacks){
+        return callbacks.map(callback => async(...params) => {
+            try{
+                await callback.apply(this, params)
+            } catch(error){
+                console.log(error)
+                params[1].status(500).send(error);
+            }
+        })
+    }
+
+    generateCustomResponses = (req, res, next) => {
+        res.sendSuccess = payload => res.send({status: "success", payload})
+        res.sendServerError = error => res.status(500).send({status: "error", error})
+        res.sendUserError = payload => res.status(400).send({status: "error", payload})
+        next();
+    }
+
+    handlePolicies = (policies) => {
+        if(policies[0] === "PUBLIC"){
+            return (req, res, next) => {
+                next();
+            }
+        }
+
+        return async(req, res, next) => {
+            passport.authenticate("jwt", function(err, user, info){
+                if(err){
+                    return next(err);
+                }
+
+                if(!user){
+                    return res.status(401).send({error: info.messages ? info.messages : "Ocurrió un error en la validación"})
+                }
+
+                if(user.role !== policies[0]){
+                    return res.status(403).send({error: "Forbidden: No tienes permiso para entrar."})
+                }
+                
+                req.user = user;
+                next();
+            })(req, res, next);
+        }
+    }
+}
+
+module.exports = CustomRouter

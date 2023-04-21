@@ -16,7 +16,7 @@ router.post("/", async(req, res) => {
     // res.json({ message: response});
     try {
         const response = await cartManager.addCart();
-        res.send(response);
+        res.send(response.message);
     } catch (error) {
         throw new Error(error)
     }

@@ -12,10 +12,18 @@ class UserManager{
         }
     }
 
+    findAll = async() => {
+        try {
+            const response = await userModel.find();
+            return response;
+        } catch (error) {
+            throw error
+        }
+    }
     
     findUser = async(user) => {
         try {
-            const response = await userModel.findOne({email: user})
+            const response = await userModel.findOne({email: user}).populate("cart")
             return response;
         } catch (error) {
             console.log(error)

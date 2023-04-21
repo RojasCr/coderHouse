@@ -4,6 +4,9 @@ const google = require("passport-google-oauth20");
 const github = require("passport-github2");
 const jwtPassport = require("passport-jwt");
 
+const MongoCartManager = require("../dao/mongoManager/MongoCartManager");
+const cartManager = new MongoCartManager();
+
 const jwt = require("jsonwebtoken")
 
 const { cryptPassword, compareCrypt } = require("../utils/cryptPassword");
@@ -96,14 +99,35 @@ const initializePassport = () => {
                     console.log("Usuario ya existe");
                     return done(null, false);
                 }
+                
+                //const allUsers = await userManager.findAll();
+                const newCart = await cartManager.addCart();
+                //const cartToAddUser = await cartManager.getById(newCart.result._id)
+                
+
+
+                // let id = 1;
+                // let cart = await cartManager.getCartById(id);
+                // const cartToAdd = cart._id
+                
+                //const cartRepeated = allUsers.find(u => String(u.cart._id) === String(cart._id));
+
+                
+                // if(cartRepeated){
+                //     cart = await cartManager.getCartById(Number(cartRepeated.cart.id) + 1);
+                    
+                // }
+
                 const newUser = {
                     first_name,
                     last_name,
                     email,
                     age,
                     password: cryptPassword(password),
+                    cart: newCart.result._id
                 }
                 
+                console.log(newUser)
                 const result = await userManager.createUser(newUser);
                 return done(null, result);
             } catch(error){
