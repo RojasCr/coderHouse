@@ -1,3 +1,4 @@
+const productError = require("../../utils/errors/product/product.error");
 const productsModel = require("../mongo/models/products.model");
 
 class MongoProductManager{
@@ -33,6 +34,7 @@ class MongoProductManager{
             //const productsLength = await productsModel.count();
             if(!product){
                 return `Product not found`;
+                //productError(pid)
             }
             return product;
         } catch (error) {
@@ -52,19 +54,9 @@ class MongoProductManager{
         }
     }
 
-    addProduct = async (req, res) => {
+    addProduct = async (product) => {
         try{
-            const { title, description, price, thumbail, code, stock, category} = req.body;
-            const product = {
-                id: 1,
-                title,
-                description,
-                price, 
-                thumbail,
-                code,
-                stock,
-                category
-            }
+        
             const products = await productsModel.find();
 
             if(products.length !== 0){
@@ -76,24 +68,14 @@ class MongoProductManager{
             //res.send(`Producto agregado con id: ${added.id}`);
             
         } catch(err){
+            //console.log(err.cause)
             throw new Error(err);
         }
     }
 
-    updateProduct = async (req, res) => {
+    updateProduct = async (pid, product) => {
         try {
-            const { pid } = req.params;
-            const { title, description, price, thumbail, code, stock, category} = req.body;
-            const product = {
-                id: pid,
-                title,
-                description,
-                price, 
-                thumbail,
-                code,
-                stock,
-                category
-            };
+            
             const response = await productsModel.updateOne({id: pid}, product);
             return response;
             //return res.json(response);

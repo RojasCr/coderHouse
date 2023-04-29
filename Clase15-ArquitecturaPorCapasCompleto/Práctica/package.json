@@ -6,13 +6,15 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node src/server/app.js",
-    "start:dev": "NODE_ENV=development nodemon src/server/app.js"
+    "start:dev": "nodemon src/server/app.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@faker-js/faker": "^7.6.0",
     "bcrypt": "^5.1.0",
+    "colors": "^1.4.0",
     "connect-mongo": "^4.6.0",
     "cookie-parser": "^1.4.6",
     "dotenv": "^16.0.3",

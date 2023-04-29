@@ -3,11 +3,26 @@ const customRouter = require("../../routers/CustomRouter");
 const manejadorDeProductos = require("../../dao/filesManager/productManager");
 const productsModel = require("../../dao/mongo/models/products.model");
 const MongoProductManager = require("../../dao/mongoManager/MongoProductManager");
+const createMock = require("../../utils/mocks/productsMock");
+const productError = require("../../utils/errors/product/product.error");
+const errorHandler = require("../../middlewares/errors");
 const productManager = new MongoProductManager();
 
 
 class ProductsRouter extends customRouter{
     init(){
+
+        const g=[1,2,3]
+
+        this.param("pid", async (req, res, next, pid) =>{
+            //const num = g.includes(pid);
+
+            /*if(!num){
+                res.sendUserError("Param inválido")
+            }*/
+            req.pid=pid
+            next();
+        })
 
         this.get("/", ["PUBLIC"], async (req, res) =>{
             let { limit, page, sort, query } = req.query;
@@ -29,35 +44,56 @@ class ProductsRouter extends customRouter{
 
             return res.sendSuccess(products);
         });
+        
+        this.get("/mockingproducts", ["PUBLIC"], (req, res) => {
+            const products = createMock(100);
+            res.sendSuccess(products);
+        })
 
         this.get("/:pid", ["PUBLIC"], async (req, res) => {
-            const { pid } = req.params;
-            const response = await productManager.getProductbyId(pid);
-            
-            res.sendSuccess(response);
+            try {
+                const { pid } = req.params;
+    
+                //productError(Number(pid));
+    
+                //const response = await productManager.getProductbyId(pid);
+                
+                res.sendSuccess(pid);
+                
+            } catch (error) {
+                console.log(error)
+                res.sendServerError(error)
+            }
         });
+
+
 
         this.post("/", ["ADMIN"], async (req, res) => {
             try{
-                const result = await productManager.addProduct(req, res);
-                res.sendSuccess(result.id)
-                //     const { title, description, price, thumbail, code, stock, category} = req.body;
-                //     const product = {
-                //         title,
-                //         description,
-                //         price, 
-                //         thumbail,
-                //         code,
-                //         stock,
-                //         category
-                //     }
-                //     //const added = await manejadorDeProductos.addProduct(...product);
-                //     const added = await productsModel.create(product);
-                //     //const products = await manejadorDeProductos.getProducts();
-                //     res.send(`Producto agregado`);
+                
+                const { title, description, price, thumbail, code, stock, category} = req.body;
+                
+                if(!title || !description || !price || !thumbail || !code || !stock || !category){
+                    return productError(null, { title, description, price, thumbail, code, stock, category})
+                }
+                
+                const product = {
+                    title,
+                    description,
+                    price, 
+                    thumbail,
+                    code,
+                    stock,
+                    category
+                }
+
+                const result = await productManager.addProduct(product);
+               
+                res.sendSuccess(`Producto agregado con id: ${result.id}`);
                     
             } catch(err){
-                throw new Error(err);
+                console.log(err.cause);
+                res.sendUserError(err.name) 
             }
         });
 
@@ -74,10 +110,30 @@ class ProductsRouter extends customRouter{
 
         this.put("/:pid", ["ADMIN"],async (req, res) => {
             try {
-                const result = await productManager.updateProduct(req, res);
+                const { pid } = req.params;
+                const { title, description, price, thumbail, code, stock, category} = req.body;
+                
+                if(!title || !description || !price || !thumbail || !code || !stock || !category){
+                    return productError(null, { title, description, price, thumbail, code, stock, category})
+                }
+                
+                const product = {
+                    id: pid,
+                    title,
+                    description,
+                    price, 
+                    thumbail,
+                    code,
+                    stock,
+                    category
+                };
+
+
+                const result = await productManager.updateProduct(pid, product);
                 res.sendSuccess(result);
             } catch (error) {
-                throw error;
+                console.log(error.cause);
+                res.sendUserError(error.name)
             }
             // const { pid } = req.params;
             // const { title, description, price, thumbail, code, stock, category} = req.body;

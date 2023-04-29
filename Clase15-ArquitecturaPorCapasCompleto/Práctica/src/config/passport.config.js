@@ -26,6 +26,8 @@ const { clientIDGithub, clientSecretGithub } = require("./github.config");
 
 const cookieExtractor = require("../utils/cookieExtractorJwt");
 
+const userError = require("../utils/errors/user/user.error");
+
 const LocalStrategy = local.Strategy;
 const GoogleStrategy = google.Strategy;
 const GithubStrategy = github.Strategy;
@@ -111,6 +113,11 @@ const initializePassport = () => {
             
             try{
                 const userInfo = req.body;
+
+                if(!userInfo.first_name || !userInfo.last_name || !userInfo.email || !userInfo.age){
+                    userError(userInfo);
+                }
+
                 const user = await Users.findUser(username);
                 
                 if(user){
@@ -123,13 +130,13 @@ const initializePassport = () => {
                 userInfo.cart = newCart.result._id
                 const newUser = new UserDTO(userInfo);
                 
-                console.log(newUser)
+                //console.log(newUser)
                 
                 const result = await Users.createUser(newUser);
                 
                 return done(null, result);
             } catch(error){
-                return done(`Error al obtener el usuario: ${error}`);
+                return done(error);
             }
         }
     ));

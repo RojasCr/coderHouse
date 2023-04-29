@@ -13,6 +13,10 @@ class CustomRouter{
 
     init(){};
 
+    param(path, ...callbacks){
+        this.router.param(path, this.generateCustomResponses,this.applyCallbacks(callbacks));
+    }
+
     get(path, policies,...callbacks){
         this.router.get(path, this.handlePolicies(policies), this.generateCustomResponses,this.applyCallbacks(callbacks));
     }

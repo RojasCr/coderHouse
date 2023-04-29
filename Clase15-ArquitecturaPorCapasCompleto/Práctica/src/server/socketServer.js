@@ -11,6 +11,8 @@ const initializePassport = require("../config/passport.config");
 const io = new Server(server);
 const router = require("../routers/Router");
 const mongoSessions = require("../db/sessions");
+const errorHandler = require("../middlewares/errors");
+
 
 
 
@@ -21,6 +23,7 @@ app.use(express.urlencoded({extended: true}));
 app.use(express.static(__dirname + "/../public"));
 app.use(cookieParser());
 
+
 app.use(session(mongoSessions()))
 
 initializePassport();
@@ -29,5 +32,6 @@ app.use(passport.session());
 
 //Se ejecuta router(app)
 router;
+
 
 module.exports = { server, io, app };
