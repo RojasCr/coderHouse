@@ -1,0 +1,45 @@
+//const productsController = require("../controllers/products/controller.products");
+//const cartsController = require("../controllers/carts/controller.carts");
+//const handlebarsController = require("../handlebars/controller.handlebars")
+//const userController = require("../controllers/users/controller.user")
+//const authController = require("../auth/auth")
+
+const CustomControllerUsers = require("../controllers/users/customController.user")
+const customUsersController = new CustomControllerUsers();
+
+const CustomControllerCarts = require("../controllers/carts/customController.carts")
+const customCartsController = new CustomControllerCarts();
+
+const CustomControllerProducts = require("../controllers/products/customController.products")
+const customProductsController = new CustomControllerProducts();
+
+const CustomControllerAuth = require("../auth/customController.auth")
+const customAuthController = new CustomControllerAuth();
+
+const CustomControllerHandlebars = require("../handlebars/customController.handlebars");
+//const CustomError = require("../utils/errors/customErrors");
+//const generateErrorInfo = require("../utils/errors/infoError");
+//const enumErrors = require("../utils/errors/enumErrors");
+const customHandlebarsCOntroller = new CustomControllerHandlebars();
+
+const router = (app) => {
+    //Middlewares
+    app.use("/api/products", customProductsController.getRouter());
+    app.use("/api/carts", customCartsController.getRouter());
+    //app.use("/", handlebarsController);
+
+    //app.use("/users", userController)
+    //app.use("/auth", authController)
+
+    app.use("/auth", customAuthController.getRouter());
+    app.use("/users", customUsersController.getRouter());
+    app.use("/", customHandlebarsCOntroller.getRouter());
+    /*app.use("/users/*", CustomError.createError({
+        name:"Error de ruteo",
+        cause: generateErrorInfo(enumErrors.ROUTING_ERROR),
+        message: "Endpoint no válido",
+        code: enumErrors.ROUTING_ERROR
+    }))*/
+}
+
+module.exports = router;
