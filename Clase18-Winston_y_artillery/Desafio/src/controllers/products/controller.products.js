@@ -1,16 +1,10 @@
 const { Router } = require("express");
-const manejadorDeProductos = require("../dao/filesManager/productManager");
-const productsModel = require("../dao/models/products.model");
-const MongoProductManager = require("../dao/mongoManager/MongoProductManager");
-const messageModel = require("../dao/models/messages.model");
+const manejadorDeProductos = require("../../dao/filesManager/productManager");
+const productsModel = require("../../dao/mongo/models/products.model");
+const MongoProductManager = require("../../dao/mongoManager/MongoProductManager");
 const productManager = new MongoProductManager();
 
 const router = Router();
-
-router.get("/image", async(req, res) => {
-    const img = await messageModel.find({user: "cis"});
-    res.json({payload: img})
-})
 
 router.get("/", async (req, res) =>{
     let { limit, page, sort, query } = req.query;
