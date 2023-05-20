@@ -184,6 +184,8 @@ const initializePassport = () => {
             //console.log(token)
             //user.token=token;
 
+            
+
             return done(null, user)
         } catch (error) {
             return done(error)

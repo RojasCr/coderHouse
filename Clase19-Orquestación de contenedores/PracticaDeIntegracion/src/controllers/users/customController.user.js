@@ -3,7 +3,8 @@ const customRouter = require("../../routers/CustomRouter");
 const passport = require("passport");
 
 
-const Users = require("../../repositories/index")
+const Users = require("../../repositories/index");
+const userModel = require("../../dao/mongo/models/users.model");
 
 class UsersRouter extends customRouter{
     init(){
@@ -22,6 +23,42 @@ class UsersRouter extends customRouter{
             //console.log("Falló la estrategia");
             res.sendServerError(error);
         });
+
+        this.patch("/premium", ["USER", "PREMIUM"], async(req, res) => {
+            try {
+                const currentUser = req.user;
+                
+                // let newGrade = currentUser.role === "USER"? "PREMIUM" : "USER";
+
+                if(currentUser.role === "USER"){
+                    const response = await userModel.findOneAndUpdate({email: currentUser.email}, {role: "PREMIUM"})
+                    console.log(response.role)
+                    return res.sendSuccess(`Ahora eres ${response.role}`);
+                }
+
+                if(currentUser.role === "PREMIUM"){
+                    const response = await userModel.findOneAndUpdate({email: currentUser.email}, {role: "USER"})
+                    console.log(response.role)
+                    return res.sendSuccess(`Ahora eres ${response.role}`);
+                }
+                
+                // switch (currentUser.role) {
+                //     case "USER":
+                //         let newGrade = "PREMIUM"
+                //     break;
+                //     case "PREMIUM":
+                //         newGrade = "USER"
+                //     break;        
+                //     default:
+                //     break;
+                // }
+                            
+                //const response = await Users.updateGrade(currentUser.email, currentUser.role)
+            } catch (error) {
+                req.logger.error(error.cause)
+                res.sendServerError(error)
+            }
+        })
 
         this.get("/user", ["PUBLIC"], async(req, res) => {
             try {

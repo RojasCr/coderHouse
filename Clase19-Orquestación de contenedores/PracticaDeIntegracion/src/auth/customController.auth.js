@@ -4,6 +4,8 @@ const UserManager = require("../dao/mongoManager/MongoUserDao");
 const jwt = require("jsonwebtoken")
 const { generateToken } = require("../utils/jwt.utils");
 const passport = require("passport");
+const { sendMail } = require("../utils/nodeMailer/nodeMailer");
+const { compareCrypt } = require("../utils/cryptPassword");
 
 const userManager = new UserManager();
 
@@ -12,11 +14,12 @@ class AuthRouter extends CustomRouter{
     
         this.post("/", ["PUBLIC"],async(req, res) => {
             try {
-                const {token,userInfo} = await generateToken(req, res)
-                //console.log(token);    
-                res.cookie("jwt", token).cookie("user", userInfo).redirect("/products");
+                const { email, password } = req.body;
+
+                const response = await generateToken(email, password)
+                   
+                res.cookie("jwt", response.token).cookie("user", response.userInfo).redirect("/products");
             } catch (error) {
-                //res.sendServerError(`Algo fue mal: ${error}`)
                 req.logger.error("Usuario no autenticado")
             }
         })
@@ -52,11 +55,28 @@ class AuthRouter extends CustomRouter{
     
         });
 
-        this.patch("/restore", async (req, res) => {
+        this.post("/sendMail", ["PUBLIC"], (req, res) => {
+            const { email } = req.body
+
+            sendMail(email);
+            
+            res.cookie("restoringMail", "secret", {maxAge: 60*60*1000}).json({message: "Mail enviado"});
+        })
+
+        this.patch("/restore", ["PUBLIC"], async (req, res) => {
             try {
                 const { email, newPassword } = req.body;
+
+                const user = await userManager.findUser(email);
+
+                const isRepeated = compareCrypt(newPassword, user.password);
+
+                if(isRepeated){
+                    return res.json({status: "error", message: "El password no puede ser el mismo"})
+                }
+
                 await userManager.updateUser(email, newPassword);
-                return res.json({message: "Contraseña restaurada"});
+                return res.json({status: "success", message: "Contraseña restaurada"});
             } catch (error) {
                 console.log(error);
             }

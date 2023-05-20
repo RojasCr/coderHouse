@@ -73,7 +73,7 @@ class CustomRouter{
                     return res.status(401).send({error: info.messages ? info.messages : "Ocurrió un error en la validación"})
                 }
 
-                if(user.role !== policies[0]){
+                if(!policies.includes(user.role)){
                     req.logger.fatal("Un usuario quiere ingresar a zona restringida")
                     return res.status(403).send({error: "Forbidden: No tienes permiso para entrar."})
                 }

@@ -46,6 +46,15 @@ class UserRepository{
             console.log(error);
         }
     }
+
+    updateGrade = async(email, newGrade) => {
+        try {
+            const response = await this.dao.updateGrade(email, newGrade)
+            
+        } catch (error) {
+            console.log(error)
+        }
+    }
 }
 
 module.exports = UserRepository;

@@ -51,6 +51,15 @@ class UserMongoDao{
         }
     }
 
+    updateGrade = async(email, newGrade) => {
+        try {
+            const response = await userModel.findOne({email})
+            //console.log(response)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
 }
 
 module.exports = UserMongoDao;

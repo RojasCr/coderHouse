@@ -20,7 +20,7 @@ class HandlebarsRouter extends CustomRouter{
             }
         });
 
-        this.get("/products", ["USER"], async(req, res) => {
+        this.get("/products", ["USER", "ADMIN", "PREMIUM"], async(req, res) => {
             let { limit, page, sort, query } = req.query;
             const  user  = req.cookies.user;
             //console.log(req.user)
@@ -91,8 +91,17 @@ class HandlebarsRouter extends CustomRouter{
             res.render("login")
         });
 
+        this.get("/restore", ["PUBLIC"], (req, res) => {
+            res.render("sendMail",{})
+        })
+
         this.get("/restorePassword", ["PUBLIC"], (req, res) => {
-            //const { user } = req.session;
+            const { restoringMail } = req.cookies;
+
+            if(!restoringMail){
+                return res.redirect("/restore")
+            }
+            
             res.render("restorePassword", {});
         });
 

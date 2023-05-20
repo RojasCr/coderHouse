@@ -61,7 +61,7 @@ class ProductsRouter extends customRouter{
 
 
 
-        this.post("/", ["ADMIN"], async (req, res) => {
+        this.post("/", ["ADMIN", "PREMIUM"], async (req, res) => {
             try{
                 
                 const { title, description, price, thumbail, code, stock, category} = req.body;
@@ -69,6 +69,8 @@ class ProductsRouter extends customRouter{
                 if(!title || !description || !price || !thumbail || !code || !stock || !category){
                     return productError(null, { title, description, price, thumbail, code, stock, category})
                 }
+
+                const currentUser = req.user
                 
                 const product = {
                     title,
@@ -77,7 +79,8 @@ class ProductsRouter extends customRouter{
                     thumbail,
                     code,
                     stock,
-                    category
+                    category,
+                    owner: currentUser.email
                 }
 
                 const result = await productManager.addProduct(product);
@@ -85,9 +88,9 @@ class ProductsRouter extends customRouter{
                 res.sendSuccess(`Producto agregado con id: ${result.id}`);
                     
             } catch(error){
-                req.logger.error(error.cause)
-                //console.log(err.cause);
-                res.sendUserError(error.name) 
+                req.logger.error(error)
+                console.log(error);
+                res.sendUserError(error) 
             }
         });
 
@@ -102,7 +105,7 @@ class ProductsRouter extends customRouter{
             }
         });
 
-        this.put("/:pid", ["ADMIN"],async (req, res) => {
+        this.put("/:pid", ["ADMIN", "PREMIUM"],async (req, res) => {
             try {
                 const { pid } = req.params;
                 const { title, description, price, thumbail, code, stock, category} = req.body;
@@ -130,27 +133,24 @@ class ProductsRouter extends customRouter{
                 //console.log(error.cause);
                 res.sendUserError(error.name)
             }
-            // const { pid } = req.params;
-            // const { title, description, price, thumbail, code, stock, category} = req.body;
-            // const product = [
-            //     id= pid,
-            //     title,
-            //     description,
-            //     price, 
-            //     thumbail,
-            //     code,
-            //     stock,
-            //     category
-            // ];
-            // await manejadorDeProductos.updateProduct(...product);
+            
         });
 
-        this.delete("/:pid", ["ADMIN"], async(req, res) => {
+        this.delete("/:pid", ["ADMIN", "PREMIUM"], async(req, res) => {
             try {
-                const response = await productManager.deleteProduct(req, res);
-                res.sendSuccess(response);
+                const { pid } = req.params;
+                const currentUser = req.user
+
+                const currentProduct = await productManager.getProductbyId(pid);
+
+                if(currentProduct.owner === currentUser.email || currentUser.role === "ADMIN"){
+                    const response = await productManager.deleteProduct(pid);
+                    return res.sendSuccess(response);
+                }
+                
+                return res.sendUserError("Este producto no es tuyo")
             } catch (error) {
-                throw error
+                req.logger.error(error.cause)
             }
             // const { pid } = req.params;
             // await manejadorDeProductos.deleteProduct(pid);

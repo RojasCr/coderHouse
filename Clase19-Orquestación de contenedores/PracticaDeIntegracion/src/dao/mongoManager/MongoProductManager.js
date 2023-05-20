@@ -85,9 +85,9 @@ class MongoProductManager{
         }
     }
 
-    deleteProduct = async (req, res) => {
+    deleteProduct = async (pid) => {
         try {
-            const { pid } = req.params;
+            
             await productsModel.deleteOne({id: pid});
             return `Product ${pid} deleted`;
         } catch (error) {

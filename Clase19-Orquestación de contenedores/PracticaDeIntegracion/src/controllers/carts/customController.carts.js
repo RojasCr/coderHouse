@@ -72,9 +72,17 @@ class CartsRouter extends customRouter{
             }
         })
 
-        this.post("/:cid/product/:pid", ["USER"],async(req, res) => {
+        this.post("/:cid/product/:pid", ["USER", "PREMIUM"],async(req, res) => {
             try {
+
+                const currentUser = req.user;
                 const { cid, pid} = req.params;
+
+                const currentProduct = await productModel.findOne({id: pid})
+
+                if(currentProduct.owner === currentUser.email){
+                    return res.sendUserError("No puedes agregar un producto que te pertenece")
+                }
                 const response = await cartManager.addProductToCart(cid, pid);
                 res.sendSuccess(response);
             } catch (error) {
