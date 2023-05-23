@@ -1,6 +1,10 @@
 const nodemailer = require("nodemailer");
+const jwt = require("jsonwebtoken");
+
 
 const sendMail = (receiver) => {
+    const token = jwt.sign({email: receiver}, "secretMail", {expiresIn: "1h"});
+
     const transporter = nodemailer.createTransport({
         service: "gmail",
         user: "smto.gmail.com",
@@ -12,7 +16,7 @@ const sendMail = (receiver) => {
         }
     });
 
-    let link = "http://localhost:8080/restorePassword";
+    let link = `http://localhost:8080/restorePassword/${token}`;
     
     const mailOptions = {
         from: "criscoder2023@gmail.com",

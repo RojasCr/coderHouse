@@ -60,7 +60,7 @@ class AuthRouter extends CustomRouter{
 
             sendMail(email);
             
-            res.cookie("restoringMail", "secret", {maxAge: 60*60*1000}).json({message: "Mail enviado"});
+            res./*cookie("restoringMail", "secret", {maxAge: 60*60*1000}).*/json({message: "Mail enviado"});
         })
 
         this.patch("/restore", ["PUBLIC"], async (req, res) => {

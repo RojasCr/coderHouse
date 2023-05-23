@@ -1,5 +1,5 @@
 const customRouter = require("../../routers/CustomRouter");
-
+const jwt = require("jsonwebtoken")
 const passport = require("passport");
 
 
@@ -28,34 +28,23 @@ class UsersRouter extends customRouter{
             try {
                 const currentUser = req.user;
                 
-                // let newGrade = currentUser.role === "USER"? "PREMIUM" : "USER";
-
-                if(currentUser.role === "USER"){
-                    const response = await userModel.findOneAndUpdate({email: currentUser.email}, {role: "PREMIUM"})
-                    console.log(response.role)
-                    return res.sendSuccess(`Ahora eres ${response.role}`);
+                switch (currentUser.role) {
+                    case "USER":
+                        currentUser.role = "PREMIUM"
+                    break;
+                    case "PREMIUM":
+                        currentUser.role = "USER"
+                    break;        
+                    default:
+                    break;
                 }
-
-                if(currentUser.role === "PREMIUM"){
-                    const response = await userModel.findOneAndUpdate({email: currentUser.email}, {role: "USER"})
-                    console.log(response.role)
-                    return res.sendSuccess(`Ahora eres ${response.role}`);
-                }
-                
-                // switch (currentUser.role) {
-                //     case "USER":
-                //         let newGrade = "PREMIUM"
-                //     break;
-                //     case "PREMIUM":
-                //         newGrade = "USER"
-                //     break;        
-                //     default:
-                //     break;
-                // }
                             
-                //const response = await Users.updateGrade(currentUser.email, currentUser.role)
+                const response = await Users.updateGrade(currentUser.email, currentUser.role);
+                const newJwt = jwt.sign({email: currentUser.email, role: currentUser.role}, "secreto");
+                return res.cookie("jwt", newJwt).sendSuccess(`Ahora eres ${currentUser.role}`);
+            
             } catch (error) {
-                req.logger.error(error.cause)
+                req.logger.error(error)
                 res.sendServerError(error)
             }
         })

@@ -53,7 +53,7 @@ class UserMongoDao{
 
     updateGrade = async(email, newGrade) => {
         try {
-            const response = await userModel.findOne({email})
+            const response = await userModel.updateOne({email}, {role: newGrade})
             //console.log(response)
         } catch (error) {
             console.log(error)

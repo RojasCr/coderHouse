@@ -9,6 +9,8 @@ const cartManager = new MongoCartManager();
 const manejadorDeProductos = require("../dao/filesManager/productManager");
 //const passport = require("passport");
 
+const jwt = require("jsonwebtoken")
+
 
 class HandlebarsRouter extends CustomRouter{
     init(){
@@ -95,14 +97,18 @@ class HandlebarsRouter extends CustomRouter{
             res.render("sendMail",{})
         })
 
-        this.get("/restorePassword", ["PUBLIC"], (req, res) => {
-            const { restoringMail } = req.cookies;
+        this.get("/restorePassword/:token", ["PUBLIC"], (req, res) => {
+            //const { restoringMail } = req.cookies;
+            const { token } = req.params;
 
-            if(!restoringMail){
-                return res.redirect("/restore")
-            }
+            jwt.verify(token, "secretMail", (error) => {
+                if(error){
+                    return res.redirect("/restore")
+                }
+                res.render("restorePassword", {});
+            });
+
             
-            res.render("restorePassword", {});
         });
 
         //Local
