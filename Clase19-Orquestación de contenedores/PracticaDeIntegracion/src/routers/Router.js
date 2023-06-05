@@ -17,6 +17,7 @@ const CustomControllerAuth = require("../auth/customController.auth")
 const customAuthController = new CustomControllerAuth();
 
 const CustomControllerHandlebars = require("../handlebars/customController.handlebars");
+const swaggerConfig = require("../utils/swagger.utils");
 //const CustomError = require("../utils/errors/customErrors");
 //const generateErrorInfo = require("../utils/errors/infoError");
 //const enumErrors = require("../utils/errors/enumErrors");
@@ -34,12 +35,8 @@ const router = (app) => {
     app.use("/auth", customAuthController.getRouter());
     app.use("/users", customUsersController.getRouter());
     app.use("/", customHandlebarsCOntroller.getRouter());
-    /*app.use("/users/*", CustomError.createError({
-        name:"Error de ruteo",
-        cause: generateErrorInfo(enumErrors.ROUTING_ERROR),
-        message: "Endpoint no válido",
-        code: enumErrors.ROUTING_ERROR
-    }))*/
+    
+    app.use("/docs", swaggerConfig)
 }
 
 module.exports = router;
