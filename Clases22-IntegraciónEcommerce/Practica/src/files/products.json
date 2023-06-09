@@ -1,0 +1,146 @@
+[
+ {
+  "id": 1,
+  "title": "agua",
+  "description": "bebida",
+  "price": 100,
+  "thumbail": "url",
+  "code": 1,
+  "stock": 1000,
+  "category": "hoja"
+ },
+ {
+  "id": 2,
+  "title": "agua",
+  "description": "bebida",
+  "price": 100,
+  "thumbail": "url",
+  "code": 2,
+  "stock": 1000,
+  "category": "hoja"
+ },
+ {
+  "id": 3,
+  "title": "agua",
+  "description": "bebida",
+  "price": 100,
+  "thumbail": "url",
+  "code": 3,
+  "stock": 1000,
+  "category": "hoja"
+ },
+ {
+  "id": 4,
+  "title": "agua",
+  "description": "bebida",
+  "price": 100,
+  "thumbail": "url",
+  "code": 4,
+  "stock": 1000,
+  "category": "hoja"
+ },
+ {
+  "id": 5,
+  "title": "jorgin",
+  "description": "alfajor",
+  "price": 100,
+  "thumbail": "url",
+  "code": 5,
+  "stock": 1000,
+  "category": "hoja"
+ },
+ {
+  "id": 6,
+  "title": "gualmar",
+  "description": "alfajor",
+  "price": 100,
+  "thumbail": "url",
+  "code": 6,
+  "stock": 1000,
+  "category": "hoja"
+ },
+ {
+  "id": 7,
+  "title": "papelin",
+  "description": "papel",
+  "price": 100,
+  "thumbail": "url",
+  "code": 7,
+  "stock": 1000,
+  "category": "hoja"
+ },
+ {
+  "id": 8,
+  "title": "papecon",
+  "description": "papel",
+  "price": 100,
+  "thumbail": "url",
+  "code": 8,
+  "stock": 1000,
+  "category": "hoja"
+ },
+ {
+  "id": 9,
+  "title": "bolsin",
+  "description": "bolsa",
+  "price": 100,
+  "thumbail": "url",
+  "code": 9,
+  "stock": 1000,
+  "category": "hoja"
+ },
+ {
+  "id": 10,
+  "title": "bolstrap",
+  "description": "bolsa",
+  "price": 100,
+  "thumbail": "url",
+  "code": 10,
+  "stock": 1000,
+  "category": "hoja"
+ },
+ {
+  "id": 11,
+  "title": "asdsad",
+  "description": "fghghg",
+  "price": "48",
+  "thumbail": "url",
+  "code": "1234",
+  "stock": "1",
+  "status": true,
+  "category": "hojas"
+ },
+ {
+  "id": 12,
+  "title": "asdsad",
+  "description": "fghghg",
+  "price": "48",
+  "thumbail": "url",
+  "code": "12345",
+  "stock": "1",
+  "status": true,
+  "category": "hojas"
+ },
+ {
+  "id": 13,
+  "title": "qweqw",
+  "description": "fghghg",
+  "price": "48",
+  "thumbail": "url",
+  "code": "1234548",
+  "stock": "1",
+  "status": true,
+  "category": "hojas"
+ },
+ {
+  "id": 14,
+  "title": "qwsacc",
+  "description": "fghghg",
+  "price": "48",
+  "thumbail": "url",
+  "code": "4545",
+  "stock": "1",
+  "status": true,
+  "category": "hojas"
+ }
+]
